@@ -10,12 +10,10 @@ namespace ConsoleAppV3.Repositories
     {
         private const string UserFilePath = "user.json";
         private User _currentUser;
-
         public UserManager()
         {
             _currentUser = LoadUser();
         }
-
         public void RegisterUser(User user)
         {
             if (_currentUser != null)
@@ -26,15 +24,12 @@ namespace ConsoleAppV3.Repositories
             _currentUser = user;
             SaveUser();
         }
-
         public User GetUser() => _currentUser;
-
         public void SaveUser()
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
             File.WriteAllText(UserFilePath, JsonSerializer.Serialize(_currentUser, options));
         }
-
         public void ClearUser()
         {
             try
@@ -42,10 +37,12 @@ namespace ConsoleAppV3.Repositories
                 if (File.Exists(UserFilePath))
                     File.Delete(UserFilePath);
             }
-            catch { /* Handle exception if needed */ }
+             catch (Exception)
+            {
+                Console.WriteLine("файла не существует");
+            }
             _currentUser = null;
         }
-
         private User LoadUser()
         {
             if (!File.Exists(UserFilePath)) return null;
