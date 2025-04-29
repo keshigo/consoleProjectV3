@@ -18,7 +18,6 @@ namespace ConsoleAppV3
         private static IUserManager _userManager;
         private static INoteArchive _noteArchive;
         private static bool _isRunning = true;
-
         static void Main(string[] args)
         {
             ServiceInitialize();
@@ -29,7 +28,6 @@ namespace ConsoleAppV3
                 MenuCommands(Console.ReadLine());
             }
         }
-
         private static void ServiceInitialize()
         {
             _userManager = new UserManager();
@@ -58,7 +56,6 @@ namespace ConsoleAppV3
             { "7", ShowHelp },
             { "8", Exit }
         };
-
         private static void DisplayMenu()
         {
             Console.WriteLine("\nменю");
@@ -71,7 +68,6 @@ namespace ConsoleAppV3
             Console.WriteLine("7) Помощь");
             Console.WriteLine("8) Выход");
         }
-
         private static void MenuCommands(string command)
         {
             try
@@ -128,7 +124,6 @@ namespace ConsoleAppV3
                 Console.WriteLine("Сначала войдите в систему");
                 return;
             }
-            
             var notes = _noteArchive.GetNotes()
                 .Where(n => n.User?.Name == user.Name)
                 .ToList();
@@ -157,7 +152,6 @@ namespace ConsoleAppV3
                 System.Console.WriteLine("айди некорректный");
                 return;
             }
-            
             try
             {
                 var note = _noteArchive.SearchNoteById(id);
@@ -166,7 +160,6 @@ namespace ConsoleAppV3
                     System.Console.WriteLine("это не ваша заметка");
                     return;
                 }
-                
                 note.IsCompleted = !note.IsCompleted;
                 _noteArchive.ChangeNote(note);
                 System.Console.WriteLine($"Статус замкетки {id} изменен на {(note.IsCompleted ? "done" : "in work")}");
@@ -176,7 +169,6 @@ namespace ConsoleAppV3
             {
                 System.Console.WriteLine($"Заметка с {id} не найдена");
             }
-
         }
         private static void ChangeNote()
         {
@@ -206,14 +198,12 @@ namespace ConsoleAppV3
                 {
                     note.Title = newTitle;
                 }
-
                 System.Console.WriteLine($"текущее описание заметки {note.Description}");
                 var newDescription = Console.ReadLine();
                 if (!string.IsNullOrEmpty(newDescription)) 
                 {
                     note.Description = newDescription;
                 }       
-
                 System.Console.WriteLine($"изменить статус заметки? {(note.IsCompleted ? "completed" : "in work")}) ? [y/n]");
                 var changeStatus = Console.ReadLine().Trim().ToLower() == "y";
                 if (changeStatus)
@@ -224,14 +214,11 @@ namespace ConsoleAppV3
                 System.Console.WriteLine("Заметка обновлена ");
 
                 System.Console.WriteLine($"обновленные данные: id {note.Id} title {note.Title} description {note.Description} status {(note.IsCompleted ? "completed" : "in work")}");
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка: {ex.Message}");
             }
-
-
         }
         private static void RemoveNote()
         {
