@@ -13,24 +13,19 @@ namespace ConsoleAppV3.Repositories
         private const string NoteFilePath = "notes.json";
         private List<Note> _notes = new List<Note>();
         private int _nextId = 1;
-
         public NoteRepository()
         {
             LoadNote();
         }
-
         public IEnumerable<Note> GetNotes() => _notes.AsReadOnly();
-
         public Note SearchNoteById(int id) => 
             _notes.FirstOrDefault(n => n.Id == id) ?? throw new Exception("Note not found");
-
         public void AddNote(Note note)
         {
             note.Id = _nextId++;
             _notes.Add(note);
             SaveNote();
         }
-
         public void ChangeNote(Note note)
         {
             var index = _notes.FindIndex(n => n.Id == note.Id);
@@ -40,7 +35,6 @@ namespace ConsoleAppV3.Repositories
                 SaveNote();
             }
         }
-
         public void RemoveNote(int id)
         {
             var note = _notes.FirstOrDefault(n => n.Id == id);
@@ -50,13 +44,11 @@ namespace ConsoleAppV3.Repositories
                 SaveNote();
             }
         }
-
         public void SaveNote()
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
             File.WriteAllText(NoteFilePath, JsonSerializer.Serialize(_notes, options));
         }
-
         public void LoadNote()
         {
             try
